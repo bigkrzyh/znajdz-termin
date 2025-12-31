@@ -5,7 +5,7 @@ Support website for the Znajdź Termin iOS app, designed for Apple App Store rev
 ## Structure
 
 ```
-znajdz-termin-support/
+znajdz-termin/
 ├── index.html          # English (default)
 ├── privacy.html        # Privacy Policy (English)
 ├── pl/
@@ -17,16 +17,16 @@ znajdz-termin-support/
 
 ## Setup for GitHub Pages
 
-1. **Create a new GitHub repository** named `znajdz-termin-support`
+1. **Create a new GitHub repository** named `znajdz-termin`
 
 2. **Push this folder to GitHub**:
    ```bash
-   cd znajdz-termin-support
+   cd znajdz-termin
    git init
    git add .
    git commit -m "Initial commit - support site"
    git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/znajdz-termin-support.git
+   git remote add origin https://github.com/bigkrzyh/znajdz-termin.git
    git push -u origin main
    ```
 
@@ -34,14 +34,14 @@ znajdz-termin-support/
    - Go to repository Settings → Pages
    - Under "Source", select `main` branch
    - Click Save
-   - Your site will be available at: `https://YOUR_USERNAME.github.io/znajdz-termin-support/`
+   - Your site will be available at: `https://bigkrzyh.github.io/znajdz-termin/`
 
 ## URLs for App Store Connect
 
 After setting up GitHub Pages, use these URLs in App Store Connect:
 
-- **Support URL**: `https://YOUR_USERNAME.github.io/znajdz-termin-support/`
-- **Privacy Policy URL**: `https://YOUR_USERNAME.github.io/znajdz-termin-support/privacy.html`
+- **Support URL**: `https://bigkrzyh.github.io/znajdz-termin/`
+- **Privacy Policy URL**: `https://bigkrzyh.github.io/znajdz-termin/privacy.html`
 
 ## Customization
 
