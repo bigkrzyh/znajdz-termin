@@ -2,16 +2,29 @@
 
 Support website for the Znajdź Termin iOS app, designed for Apple App Store review.
 
+## Languages Supported
+
+- 🇬🇧 English (default)
+- 🇵🇱 Polish (Polski)
+- 🇺🇦 Ukrainian (Українська)
+- 🇷🇺 Russian (Русский)
+
 ## Structure
 
 ```
 znajdz-termin/
 ├── index.html          # English (default)
 ├── privacy.html        # Privacy Policy (English)
+├── style.css           # Shared styles
 ├── pl/
 │   ├── index.html      # Polish
 │   └── privacy.html    # Privacy Policy (Polish)
-├── style.css           # Shared styles
+├── uk/
+│   ├── index.html      # Ukrainian
+│   └── privacy.html    # Privacy Policy (Ukrainian)
+├── ru/
+│   ├── index.html      # Russian
+│   └── privacy.html    # Privacy Policy (Russian)
 └── README.md           # This file
 ```
 
@@ -52,7 +65,7 @@ Before publishing, update the following:
 
 ## Features
 
-- 🌐 Bilingual (English & Polish)
+- 🌐 Multilingual (English, Polish, Ukrainian, Russian)
 - 📱 Mobile responsive design
 - 🎨 iOS-style design language
 - 📋 FAQ section

@@ -87,13 +87,19 @@ header .container {
     font-weight: 600;
 }
 
+.lang-nav {
+    display: flex;
+    gap: 8px;
+}
+
 .lang-switch {
     color: var(--primary);
     text-decoration: none;
     font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
     transition: background 0.2s;
+    font-size: 0.9rem;
 }
 
 .lang-switch:hover {
