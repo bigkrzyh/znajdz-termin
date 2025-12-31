@@ -47,7 +47,7 @@ After setting up GitHub Pages, use these URLs in App Store Connect:
 
 Before publishing, update the following:
 
-1. **Email address**: Replace `support@example.com` with your actual email in all HTML files
+1. **Email address**: Currently set to `bigkrzyh@gmail.com`
 2. **Copyright**: Update year if needed in footer sections
 
 ## Features
