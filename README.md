@@ -69,8 +69,9 @@ Before publishing, update the following:
 - 📱 Mobile responsive design
 - 🎨 iOS-style design language
 - 📋 FAQ section
-- 🔒 Privacy Policy
+- 🔒 Privacy Policy (includes advertising disclosure)
 - ♿ Accessible
+- 📢 Ad-supported (Google AdMob)
 
 ## License
 
