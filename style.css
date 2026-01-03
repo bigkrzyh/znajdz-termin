@@ -296,6 +296,55 @@ details p {
     margin-bottom: 8px;
 }
 
+/* Privacy Summary Box */
+.privacy-summary {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.privacy-summary h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* Privacy Tables */
+.privacy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.9rem;
+}
+
+.privacy-table th,
+.privacy-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.privacy-table th {
+    background: var(--primary);
+    color: white;
+    font-weight: 500;
+}
+
+.privacy-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.privacy-table a {
+    color: var(--primary);
+}
+
+.table-note {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 8px;
+}
+
 /* Footer */
 footer {
     background: var(--dark);

@@ -15,16 +15,20 @@ Support website for the Znajdź Termin iOS app, designed for Apple App Store rev
 znajdz-termin/
 ├── index.html          # English (default)
 ├── privacy.html        # Privacy Policy (English)
+├── terms.html          # Terms of Service (English)
 ├── style.css           # Shared styles
 ├── pl/
 │   ├── index.html      # Polish
-│   └── privacy.html    # Privacy Policy (Polish)
+│   ├── privacy.html    # Privacy Policy (Polish)
+│   └── terms.html      # Terms of Service (Polish)
 ├── uk/
 │   ├── index.html      # Ukrainian
-│   └── privacy.html    # Privacy Policy (Ukrainian)
+│   ├── privacy.html    # Privacy Policy (Ukrainian)
+│   └── terms.html      # Terms of Service (Ukrainian)
 ├── ru/
 │   ├── index.html      # Russian
-│   └── privacy.html    # Privacy Policy (Russian)
+│   ├── privacy.html    # Privacy Policy (Russian)
+│   └── terms.html      # Terms of Service (Russian)
 └── README.md           # This file
 ```
 
@@ -55,6 +59,17 @@ After setting up GitHub Pages, use these URLs in App Store Connect:
 
 - **Support URL**: `https://bigkrzyh.github.io/znajdz-termin/`
 - **Privacy Policy URL**: `https://bigkrzyh.github.io/znajdz-termin/privacy.html`
+- **Terms of Service URL**: `https://bigkrzyh.github.io/znajdz-termin/terms.html`
+
+## App Store Privacy Labels
+
+When submitting to App Store, use this information for Privacy Labels:
+
+| Data Type | Collected | Purpose | Linked to User | Tracking |
+|-----------|-----------|---------|----------------|----------|
+| Coarse Location | Yes | App Functionality | No | No |
+| Device ID | Yes (via AdMob) | Advertising | No | Yes |
+| Usage Data | Yes (via AdMob) | Advertising | No | Yes |
 
 ## Customization
 
