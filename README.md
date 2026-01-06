@@ -71,6 +71,20 @@ When submitting to App Store, use this information for Privacy Labels:
 | Device ID | Yes (via AdMob) | Advertising | No | Yes |
 | Usage Data | Yes (via AdMob) | Advertising | No | Yes |
 
+## App Tracking Transparency (ATT)
+
+The app implements Apple's App Tracking Transparency framework:
+
+1. **Permission Request**: The ATT permission dialog appears when the app becomes active for the first time
+2. **Timing**: Request is shown after a 1-second delay to ensure proper display
+3. **Ad Loading**: Ads are only loaded AFTER the user responds to the ATT prompt
+4. **Non-personalized Ads**: If user denies tracking, non-personalized ads are shown
+
+### ATT Implementation Details
+- Framework: `AppTrackingTransparency`
+- Permission Key: `NSUserTrackingUsageDescription`
+- Message (Polish): "Ta aplikacja używa identyfikatora reklamowego do wyświetlania spersonalizowanych reklam."
+
 ## Customization
 
 Before publishing, update the following:
