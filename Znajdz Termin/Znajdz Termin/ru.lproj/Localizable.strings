@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings (Russian)
+  Znajdz Termin
+*/
+
+// App
+"app_name" = "Znajdź Termin";
+"app_subtitle" = "Поиск приёмов NFZ";
+
+// Search Screen
+"select_voivodeship_hint" = "Выберите воеводство, чтобы начать";
+"select_voivodeship" = "Выберите воеводство";
+"service_name_optional" = "Название услуги (необязательно)";
+"loading_services" = "Загрузка услуг...";
+"select_voivodeship_first" = "Сначала выберите воеводство";
+"location_optional" = "Город (необязательно)";
+"urgent_cases" = "Срочный случай";
+"search_button" = "Искать приёмы";
+
+// Results Screen
+"back" = "Назад";
+"results" = "Результаты";
+"results_count" = "%d из %d";
+"data_current_as_of" = "Данные актуальны на: %@";
+"loading_more" = "Загрузка...";
+"scroll_to_load_more" = "Прокрутите для загрузки";
+"no_results" = "Нет результатов";
+"try_different_criteria" = "Попробуйте изменить критерии поиска\nили выберите другое воеводство";
+"change_criteria" = "Изменить критерии";
+
+// Appointment Row
+"waiting_count" = "В очереди: %d";
+
+// Voivodeship Picker
+"voivodeship" = "Воеводство";
+"cancel" = "Отмена";
+
+// Service Name Picker
+"service_name" = "Название услуги";
+"search_service_name" = "Искать название услуги";
+"all" = "Все";
+
+// Errors
+"error_select_voivodeship" = "Выберите воеводство";
+"error_loading_data" = "Ошибка загрузки: %@";
+"error_fetching_data" = "Ошибка получения данных: %@";
+"error_refreshing" = "Ошибка обновления: %@";
+
+// Date
+"data_label" = "Данные: %@";
+

@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings (English)
+  Znajdz Termin
+*/
+
+// App
+"app_name" = "Znajdź Termin";
+"app_subtitle" = "NFZ Appointment Search";
+
+// Search Screen
+"select_voivodeship_hint" = "Select a voivodeship to start";
+"select_voivodeship" = "Select voivodeship";
+"service_name_optional" = "Service name (optional)";
+"loading_services" = "Loading services...";
+"select_voivodeship_first" = "First select a voivodeship";
+"location_optional" = "City (optional)";
+"urgent_cases" = "Urgent case";
+"search_button" = "Search appointments";
+
+// Results Screen
+"back" = "Back";
+"results" = "Results";
+"results_count" = "%d of %d";
+"data_current_as_of" = "Data current as of: %@";
+"loading_more" = "Loading more...";
+"scroll_to_load_more" = "Scroll to load more";
+"no_results" = "No results";
+"try_different_criteria" = "Try changing your search criteria\nor select a different voivodeship";
+"change_criteria" = "Change criteria";
+
+// Appointment Row
+"waiting_count" = "Waiting: %d";
+
+// Voivodeship Picker
+"voivodeship" = "Voivodeship";
+"cancel" = "Cancel";
+
+// Service Name Picker
+"service_name" = "Service name";
+"search_service_name" = "Search service name";
+"all" = "All";
+
+// Errors
+"error_select_voivodeship" = "Select a voivodeship";
+"error_loading_data" = "Error loading data: %@";
+"error_fetching_data" = "Error fetching data: %@";
+"error_refreshing" = "Error refreshing: %@";
+
+// Date
+"data_label" = "Data: %@";
+

@@ -6,8 +6,8 @@
     "configurations": [],
     // Note: VS Code cannot debug iOS apps directly.
     // Use the tasks in tasks.json instead:
-    // - Press Cmd+Shift+P → "Tasks: Run Task" → "Open NFZ - Znajdz in Xcode"
-    // - Or use the terminal: cd "NFZ - Znajdz" && open "NFZ - Znajdz.xcodeproj"
+    // - Press Cmd+Shift+P → "Tasks: Run Task" → "Open NFZ Znajdz in Xcode"
+    // - Or use the terminal: cd "NFZ Znajdz" && open "NFZ Znajdz.xcodeproj"
     // Once Xcode opens, press Cmd+R to build and run the app.
     "compounds": []
 }

@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings (Polish)
+  Znajdz Termin
+*/
+
+// App
+"app_name" = "Znajdź Termin";
+"app_subtitle" = "Wyszukiwarka terminów NFZ";
+
+// Search Screen
+"select_voivodeship_hint" = "Wybierz województwo, aby rozpocząć";
+"select_voivodeship" = "Wybierz województwo";
+"service_name_optional" = "Nazwa świadczenia (opcjonalnie)";
+"loading_services" = "Ładowanie świadczeń...";
+"select_voivodeship_first" = "Najpierw wybierz województwo";
+"location_optional" = "Miejscowość (opcjonalnie)";
+"urgent_cases" = "Pilne (przypadek pilny)";
+"search_button" = "Szukaj terminów";
+
+// Results Screen
+"back" = "Szukaj";
+"results" = "Wyniki";
+"results_count" = "%d z %d";
+"data_current_as_of" = "Dane aktualne na: %@";
+"loading_more" = "Ładowanie więcej...";
+"scroll_to_load_more" = "Przewiń, aby załadować więcej";
+"no_results" = "Brak wyników";
+"try_different_criteria" = "Spróbuj zmienić kryteria wyszukiwania\nlub wybierz inne województwo";
+"change_criteria" = "Zmień kryteria";
+
+// Appointment Row
+"waiting_count" = "Oczekujących: %d";
+
+// Voivodeship Picker
+"voivodeship" = "Województwo";
+"cancel" = "Anuluj";
+
+// Service Name Picker
+"service_name" = "Nazwa świadczenia";
+"search_service_name" = "Szukaj nazwy świadczenia";
+"all" = "Wszystkie";
+
+// Errors
+"error_select_voivodeship" = "Wybierz województwo";
+"error_loading_data" = "Błąd ładowania danych: %@";
+"error_fetching_data" = "Błąd pobierania danych: %@";
+"error_refreshing" = "Błąd odświeżania: %@";
+
+// Date
+"data_label" = "Dane: %@";
+

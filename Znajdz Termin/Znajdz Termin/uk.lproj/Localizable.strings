@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings (Ukrainian)
+  Znajdz Termin
+*/
+
+// App
+"app_name" = "Znajdź Termin";
+"app_subtitle" = "Пошук прийомів NFZ";
+
+// Search Screen
+"select_voivodeship_hint" = "Виберіть воєводство, щоб почати";
+"select_voivodeship" = "Виберіть воєводство";
+"service_name_optional" = "Назва послуги (необов'язково)";
+"loading_services" = "Завантаження послуг...";
+"select_voivodeship_first" = "Спочатку виберіть воєводство";
+"location_optional" = "Місто (необов'язково)";
+"urgent_cases" = "Терміновий випадок";
+"search_button" = "Шукати прийоми";
+
+// Results Screen
+"back" = "Назад";
+"results" = "Результати";
+"results_count" = "%d з %d";
+"data_current_as_of" = "Дані актуальні на: %@";
+"loading_more" = "Завантаження...";
+"scroll_to_load_more" = "Прокрутіть для завантаження";
+"no_results" = "Немає результатів";
+"try_different_criteria" = "Спробуйте змінити критерії пошуку\nабо виберіть інше воєводство";
+"change_criteria" = "Змінити критерії";
+
+// Appointment Row
+"waiting_count" = "В черзі: %d";
+
+// Voivodeship Picker
+"voivodeship" = "Воєводство";
+"cancel" = "Скасувати";
+
+// Service Name Picker
+"service_name" = "Назва послуги";
+"search_service_name" = "Шукати назву послуги";
+"all" = "Усі";
+
+// Errors
+"error_select_voivodeship" = "Виберіть воєводство";
+"error_loading_data" = "Помилка завантаження: %@";
+"error_fetching_data" = "Помилка отримання даних: %@";
+"error_refreshing" = "Помилка оновлення: %@";
+
+// Date
+"data_label" = "Дані: %@";
+
