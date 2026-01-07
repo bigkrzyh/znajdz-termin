@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20F9B2DD2F031BB0009AED2C /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 20F9B2DC2F031BB0009AED2C /* ZIPFoundation */; };
 		20F9B3C52F06D5FA009AED2C /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 20F9B3C42F06D5FA009AED2C /* GoogleMobileAds */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +57,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				20F9B3C52F06D5FA009AED2C /* GoogleMobileAds in Frameworks */,
-				20F9B2DD2F031BB0009AED2C /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +125,6 @@
 			);
 			name = "Znajdz Termin";
 			packageProductDependencies = (
-				20F9B2DC2F031BB0009AED2C /* ZIPFoundation */,
 				20F9B3C42F06D5FA009AED2C /* GoogleMobileAds */,
 			);
 			productName = "Znajdz Termin";
@@ -216,7 +213,6 @@
 			mainGroup = 20F9B2A22F031B7F009AED2C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				20F9B2DA2F031BA1009AED2C /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				20F9B3C32F06D5FA009AED2C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -616,14 +612,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		20F9B2DA2F031BA1009AED2C /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.20;
-			};
-		};
 		20F9B3C32F06D5FA009AED2C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
@@ -635,11 +623,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		20F9B2DC2F031BB0009AED2C /* ZIPFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 20F9B2DA2F031BA1009AED2C /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
-			productName = ZIPFoundation;
-		};
 		20F9B3C42F06D5FA009AED2C /* GoogleMobileAds */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 20F9B3C32F06D5FA009AED2C /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
