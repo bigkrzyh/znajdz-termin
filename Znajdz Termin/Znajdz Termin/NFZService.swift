@@ -65,21 +65,20 @@ class NFZService: ObservableObject {
         currentAPIPage = 1
         currentDisplayPage = 0
         
-        // Load common benefits as default list
-        // The NFZ API requires search term for /benefits, so we use predefined common ones
-        serviceNames = NFZAPIClient.commonBenefits
-        print("NFZService: Loaded \(serviceNames.count) common benefits")
+        // Start with empty list - user will search or pick from history
+        serviceNames = []
+        print("NFZService: Ready for service name search")
         
         isServiceNamesReady = true
         isLoadingServiceNames = false
     }
     
     // MARK: - Search Benefits (Service Names)
-    /// Search for service names matching the query (requires at least 3 characters)
+    /// Search for service names matching the query (requires at least 2 characters)
     func searchServiceNames(query: String) async {
-        guard query.count >= 3 else {
-            // Show common benefits if query is too short
-            serviceNames = NFZAPIClient.commonBenefits
+        guard query.count >= 2 else {
+            // Clear results if query is too short
+            serviceNames = []
             return
         }
         
@@ -88,16 +87,58 @@ class NFZService: ObservableObject {
             let response = try await NFZAPIClient.shared.searchBenefits(name: query)
             
             if response.data.isEmpty {
-                // Keep showing common benefits if no results
-                print("NFZService: No benefits found for '\(query)', showing common benefits")
+                serviceNames = []
+                print("NFZService: No benefits found for '\(query)'")
             } else {
                 serviceNames = response.data
                 print("NFZService: Found \(response.data.count) benefits matching '\(query)'")
             }
         } catch {
             print("NFZService: Error searching benefits: \(error)")
-            // Keep current list on error
+            serviceNames = []
         }
+    }
+    
+    // MARK: - Search History
+    private static let historyKey = "ServiceNameSearchHistory"
+    private static let maxHistoryItems = 20
+    
+    /// Get search history from UserDefaults
+    func getSearchHistory() -> [String] {
+        return UserDefaults.standard.stringArray(forKey: Self.historyKey) ?? []
+    }
+    
+    /// Add a service name to search history
+    func addToSearchHistory(_ serviceName: String) {
+        var history = getSearchHistory()
+        
+        // Remove if already exists (to move to top)
+        history.removeAll { $0 == serviceName }
+        
+        // Add to beginning
+        history.insert(serviceName, at: 0)
+        
+        // Limit history size
+        if history.count > Self.maxHistoryItems {
+            history = Array(history.prefix(Self.maxHistoryItems))
+        }
+        
+        UserDefaults.standard.set(history, forKey: Self.historyKey)
+        print("NFZService: Added '\(serviceName)' to search history")
+    }
+    
+    /// Remove a service name from search history
+    func removeFromSearchHistory(_ serviceName: String) {
+        var history = getSearchHistory()
+        history.removeAll { $0 == serviceName }
+        UserDefaults.standard.set(history, forKey: Self.historyKey)
+        print("NFZService: Removed '\(serviceName)' from search history")
+    }
+    
+    /// Clear all search history
+    func clearSearchHistory() {
+        UserDefaults.standard.removeObject(forKey: Self.historyKey)
+        print("NFZService: Cleared search history")
     }
     
     // MARK: - Search

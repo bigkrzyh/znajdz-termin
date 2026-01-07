@@ -13,33 +13,30 @@ struct ServiceNamePickerView: View {
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""
     @State private var isSearching = false
-    
-    var displayedNames: [String] {
-        if searchText.isEmpty {
-            return service.serviceNames
-        }
-        // Filter locally for better UX
-        return service.serviceNames.filter { $0.localizedCaseInsensitiveContains(searchText) }
-    }
+    @State private var searchHistory: [String] = []
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                // Search bar with API search capability
+                // Search bar
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
-                        TextField(L10n.searchServiceName, text: $searchText)
+                        TextField("Wpisz nazwę świadczenia...", text: $searchText)
                             .textFieldStyle(PlainTextFieldStyle())
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
                             .onChange(of: searchText) { newValue in
-                                // Trigger API search after 3 characters
-                                if newValue.count >= 3 {
+                                // Trigger API search after 2 characters
+                                if newValue.count >= 2 {
                                     isSearching = true
                                     Task {
                                         await service.searchServiceNames(query: newValue)
                                         isSearching = false
                                     }
+                                } else {
+                                    service.serviceNames = []
                                 }
                             }
                         
@@ -49,10 +46,7 @@ struct ServiceNamePickerView: View {
                         } else if !searchText.isEmpty {
                             Button(action: { 
                                 searchText = ""
-                                // Reset to common benefits
-                                Task {
-                                    await service.searchServiceNames(query: "")
-                                }
+                                service.serviceNames = []
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
@@ -66,11 +60,11 @@ struct ServiceNamePickerView: View {
                     
                     // Hint text
                     if searchText.isEmpty {
-                        Text("Popularne świadczenia lub wpisz min. 3 znaki aby wyszukać")
+                        Text("Wpisz min. 2 znaki aby wyszukać w bazie NFZ")
                             .font(.caption)
                             .foregroundColor(.secondary)
-                    } else if searchText.count < 3 {
-                        Text("Wpisz jeszcze \(3 - searchText.count) znak(i) aby wyszukać w bazie NFZ")
+                    } else if searchText.count < 2 {
+                        Text("Wpisz jeszcze \(2 - searchText.count) znak(i) aby wyszukać")
                             .font(.caption)
                             .foregroundColor(.orange)
                     }
@@ -97,63 +91,136 @@ struct ServiceNamePickerView: View {
                         }
                     }
                     
-                    // Custom search option - allows user to search with their typed text
-                    if searchText.count >= 3 && !displayedNames.contains(where: { $0.localizedCaseInsensitiveCompare(searchText) == .orderedSame }) {
-                        Button(action: {
-                            selectedServiceName = searchText
-                            dismiss()
-                        }) {
+                    // Show search results if searching
+                    if !searchText.isEmpty && searchText.count >= 2 {
+                        // Custom search option
+                        if !service.serviceNames.contains(where: { $0.localizedCaseInsensitiveCompare(searchText) == .orderedSame }) {
+                            Button(action: {
+                                selectServiceName(searchText.uppercased())
+                            }) {
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.orange)
+                                        .frame(width: 24)
+                                    VStack(alignment: .leading) {
+                                        Text("Szukaj: \"\(searchText)\"")
+                                            .foregroundColor(.primary)
+                                        Text("Użyj własnego wyszukiwania")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    Spacer()
+                                }
+                            }
+                        }
+                        
+                        // API search results
+                        if !service.serviceNames.isEmpty {
+                            Section(header: Text("Wyniki wyszukiwania").font(.caption)) {
+                                ForEach(service.serviceNames, id: \.self) { serviceName in
+                                    Button(action: {
+                                        selectServiceName(serviceName)
+                                    }) {
+                                        HStack {
+                                            Text(serviceName)
+                                                .foregroundColor(.primary)
+                                                .lineLimit(2)
+                                            Spacer()
+                                            if selectedServiceName == serviceName {
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.blue)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else if !isSearching {
+                            // No results state
                             HStack {
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.orange)
-                                    .frame(width: 24)
-                                VStack(alignment: .leading) {
-                                    Text("Szukaj: \"\(searchText)\"")
-                                        .foregroundColor(.primary)
-                                    Text("Użyj własnego wyszukiwania")
-                                        .font(.caption)
+                                Spacer()
+                                VStack(spacing: 8) {
+                                    Image(systemName: "magnifyingglass")
+                                        .font(.title)
+                                        .foregroundColor(.secondary)
+                                    Text("Brak wyników dla \"\(searchText)\"")
+                                        .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }
+                                .padding(.vertical, 20)
                                 Spacer()
                             }
                         }
-                    }
-                    
-                    // Service names list
-                    ForEach(displayedNames, id: \.self) { serviceName in
-                        Button(action: {
-                            selectedServiceName = serviceName
-                            dismiss()
-                        }) {
-                            HStack {
-                                Text(serviceName)
-                                    .foregroundColor(.primary)
-                                    .lineLimit(2)
-                                Spacer()
-                                if selectedServiceName == serviceName {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                    } else {
+                        // Show history when not searching
+                        if !searchHistory.isEmpty {
+                            Section(header: 
+                                HStack {
+                                    Text("Historia wyszukiwania")
+                                        .font(.caption)
+                                    Spacer()
+                                    Button(action: {
+                                        service.clearSearchHistory()
+                                        searchHistory = []
+                                    }) {
+                                        Text("Wyczyść")
+                                            .font(.caption)
+                                            .foregroundColor(.red)
+                                    }
+                                }
+                            ) {
+                                ForEach(searchHistory, id: \.self) { historyItem in
+                                    HStack {
+                                        Button(action: {
+                                            selectServiceName(historyItem)
+                                        }) {
+                                            HStack {
+                                                Image(systemName: "clock.arrow.circlepath")
+                                                    .foregroundColor(.secondary)
+                                                    .frame(width: 24)
+                                                Text(historyItem)
+                                                    .foregroundColor(.primary)
+                                                    .lineLimit(2)
+                                                Spacer()
+                                                if selectedServiceName == historyItem {
+                                                    Image(systemName: "checkmark")
+                                                        .foregroundColor(.blue)
+                                                }
+                                            }
+                                        }
+                                        
+                                        // Delete button
+                                        Button(action: {
+                                            withAnimation {
+                                                service.removeFromSearchHistory(historyItem)
+                                                searchHistory = service.getSearchHistory()
+                                            }
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.gray)
+                                        }
+                                        .buttonStyle(BorderlessButtonStyle())
+                                    }
                                 }
                             }
-                        }
-                    }
-                    
-                    // Empty state
-                    if displayedNames.isEmpty && searchText.count >= 3 && !isSearching {
-                        HStack {
-                            Spacer()
-                            VStack(spacing: 8) {
-                                Image(systemName: "magnifyingglass")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.secondary)
-                                Text("Brak wyników dla \"\(searchText)\"")
-                                    .foregroundColor(.secondary)
-                                Text("Spróbuj innej nazwy świadczenia")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
+                        } else {
+                            // Empty state - no history
+                            HStack {
+                                Spacer()
+                                VStack(spacing: 12) {
+                                    Image(systemName: "magnifyingglass")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.secondary)
+                                    Text("Wyszukaj świadczenie")
+                                        .font(.headline)
+                                        .foregroundColor(.secondary)
+                                    Text("Wpisz nazwę świadczenia powyżej\nnp. \"kardiolog\", \"ortopeda\", \"rezonans\"")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .multilineTextAlignment(.center)
+                                }
+                                .padding(.vertical, 40)
+                                Spacer()
                             }
-                            .padding(.vertical, 40)
-                            Spacer()
                         }
                     }
                 }
@@ -168,7 +235,16 @@ struct ServiceNamePickerView: View {
                     }
                 }
             }
+            .onAppear {
+                searchHistory = service.getSearchHistory()
+            }
         }
+    }
+    
+    private func selectServiceName(_ name: String) {
+        selectedServiceName = name
+        service.addToSearchHistory(name)
+        dismiss()
     }
 }
 

@@ -248,11 +248,19 @@ final class NFZAPIClient: @unchecked Sendable {
         return try decoder.decode(NFZAPIResponse<NFZQueue>.self, from: data)
     }
     
-    /// Search benefits (service names) by name - requires at least 3 characters
-    /// Note: The NFZ API requires a name parameter with min 3 chars for /benefits endpoint
+    /// Search benefits (service names) by name - requires at least 2 characters
+    /// Note: The NFZ API requires a name parameter for /benefits endpoint
+    /// Includes caching to reduce API calls
     func searchBenefits(name: String, page: Int = 1, limit: Int = 25) async throws -> NFZAPIResponse<[String]> {
-        guard name.count >= 3 else {
+        guard name.count >= 2 else {
             throw NFZAPIError.badRequest
+        }
+        
+        // Check cache first
+        let cacheKey = "benefits_\(name.lowercased())_\(page)"
+        if let cached = BenefitsCache.shared.get(key: cacheKey) {
+            print("NFZAPIClient: Using cached benefits for '\(name)'")
+            return cached
         }
         
         var components = URLComponents(string: "\(baseURL)/benefits")!
@@ -282,6 +290,10 @@ final class NFZAPIClient: @unchecked Sendable {
         do {
             let result = try decoder.decode(NFZAPIResponse<[String]>.self, from: data)
             print("NFZAPIClient: Benefits search returned \(result.data.count) items")
+            
+            // Cache the result
+            BenefitsCache.shared.set(key: cacheKey, value: result)
+            
             return result
         } catch {
             print("NFZAPIClient: Benefits decoding error: \(error)")
@@ -291,31 +303,59 @@ final class NFZAPIClient: @unchecked Sendable {
             throw NFZAPIError.decodingFailed(error)
         }
     }
+}
+
+// MARK: - Benefits Cache
+
+/// In-memory cache for benefits search results to reduce API calls
+final class BenefitsCache {
+    static let shared = BenefitsCache()
     
-    /// Get common/popular benefit categories for quick selection
-    static let commonBenefits: [String] = [
-        "PORADNIA ALERGOLOGICZNA",
-        "PORADNIA KARDIOLOGICZNA",
-        "PORADNIA NEUROLOGICZNA",
-        "PORADNIA ORTOPEDYCZNA",
-        "PORADNIA OKULISTYCZNA",
-        "PORADNIA DERMATOLOGICZNA",
-        "PORADNIA ENDOKRYNOLOGICZNA",
-        "PORADNIA GASTROENTEROLOGICZNA",
-        "PORADNIA GINEKOLOGICZNA",
-        "PORADNIA UROLOGICZNA",
-        "PORADNIA CHIRURGII OGÓLNEJ",
-        "PORADNIA REUMATOLOGICZNA",
-        "PORADNIA PULMONOLOGICZNA",
-        "PORADNIA PSYCHIATRYCZNA",
-        "PORADNIA REHABILITACYJNA",
-        "REZONANS MAGNETYCZNY",
-        "TOMOGRAFIA KOMPUTEROWA",
-        "USG",
-        "ENDOSKOPIA",
-        "KOLONOSKOPIA"
-    ]
+    private var cache: [String: (response: NFZAPIResponse<[String]>, timestamp: Date)] = [:]
+    private let cacheTimeout: TimeInterval = 300 // 5 minutes
+    private let maxCacheSize = 100
+    private let queue = DispatchQueue(label: "com.znajdztermin.benefitscache")
     
+    private init() {}
+    
+    func get(key: String) -> NFZAPIResponse<[String]>? {
+        queue.sync {
+            guard let entry = cache[key] else { return nil }
+            
+            // Check if cache entry is still valid
+            if Date().timeIntervalSince(entry.timestamp) > cacheTimeout {
+                cache.removeValue(forKey: key)
+                return nil
+            }
+            
+            return entry.response
+        }
+    }
+    
+    func set(key: String, value: NFZAPIResponse<[String]>) {
+        queue.sync {
+            // Remove oldest entries if cache is full
+            if cache.count >= maxCacheSize {
+                let sortedKeys = cache.sorted { $0.value.timestamp < $1.value.timestamp }
+                for (key, _) in sortedKeys.prefix(maxCacheSize / 2) {
+                    cache.removeValue(forKey: key)
+                }
+            }
+            
+            cache[key] = (value, Date())
+        }
+    }
+    
+    func clear() {
+        queue.sync {
+            cache.removeAll()
+        }
+    }
+}
+
+// MARK: - NFZAPIClient Continued
+
+extension NFZAPIClient {
     /// Fetch localities dictionary
     func fetchLocalities(province: String? = nil, name: String? = nil, page: Int = 1, limit: Int = 25) async throws -> NFZAPIResponse<[String]> {
         var components = URLComponents(string: "\(baseURL)/localities")!
