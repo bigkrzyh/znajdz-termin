@@ -248,20 +248,22 @@ final class NFZAPIClient: @unchecked Sendable {
         return try decoder.decode(NFZAPIResponse<NFZQueue>.self, from: data)
     }
     
-    /// Fetch available benefits (service names) dictionary
-    func fetchBenefits(name: String? = nil, page: Int = 1, limit: Int = 25) async throws -> NFZAPIResponse<[String]> {
+    /// Search benefits (service names) by name - requires at least 3 characters
+    /// Note: The NFZ API requires a name parameter with min 3 chars for /benefits endpoint
+    func searchBenefits(name: String, page: Int = 1, limit: Int = 25) async throws -> NFZAPIResponse<[String]> {
+        guard name.count >= 3 else {
+            throw NFZAPIError.badRequest
+        }
+        
         var components = URLComponents(string: "\(baseURL)/benefits")!
         
-        var queryItems: [URLQueryItem] = [
+        let queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "name", value: name),
             URLQueryItem(name: "page", value: String(page)),
             URLQueryItem(name: "limit", value: String(min(limit, 25))),
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "api-version", value: "1.3")
         ]
-        
-        if let name = name, !name.isEmpty {
-            queryItems.append(URLQueryItem(name: "name", value: name))
-        }
         
         components.queryItems = queryItems
         
@@ -269,41 +271,50 @@ final class NFZAPIClient: @unchecked Sendable {
             throw NFZAPIError.invalidURL
         }
         
+        print("NFZAPIClient: Searching benefits: \(url.absoluteString)")
+        
         let request = createRequest(url: url)
         let (data, response) = try await session.data(for: request)
         
         try validateResponse(response)
         
         let decoder = JSONDecoder()
-        return try decoder.decode(NFZAPIResponse<[String]>.self, from: data)
+        do {
+            let result = try decoder.decode(NFZAPIResponse<[String]>.self, from: data)
+            print("NFZAPIClient: Benefits search returned \(result.data.count) items")
+            return result
+        } catch {
+            print("NFZAPIClient: Benefits decoding error: \(error)")
+            if let jsonString = String(data: data.prefix(500), encoding: .utf8) {
+                print("NFZAPIClient: Response preview: \(jsonString)")
+            }
+            throw NFZAPIError.decodingFailed(error)
+        }
     }
     
-    /// Fetch all benefits with pagination
-    func fetchAllBenefits() async throws -> [String] {
-        var allBenefits: [String] = []
-        var page = 1
-        var hasMore = true
-        
-        while hasMore {
-            let response = try await fetchBenefits(page: page, limit: 25)
-            let data = response.data
-            allBenefits.append(contentsOf: data)
-            
-            if let meta = response.meta, let count = meta.count {
-                let currentCount = page * 25
-                hasMore = currentCount < count
-            } else {
-                hasMore = response.links?.next != nil
-            }
-            
-            page += 1
-            
-            // Safety limit
-            if page > 100 { break }
-        }
-        
-        return allBenefits.sorted()
-    }
+    /// Get common/popular benefit categories for quick selection
+    static let commonBenefits: [String] = [
+        "PORADNIA ALERGOLOGICZNA",
+        "PORADNIA KARDIOLOGICZNA",
+        "PORADNIA NEUROLOGICZNA",
+        "PORADNIA ORTOPEDYCZNA",
+        "PORADNIA OKULISTYCZNA",
+        "PORADNIA DERMATOLOGICZNA",
+        "PORADNIA ENDOKRYNOLOGICZNA",
+        "PORADNIA GASTROENTEROLOGICZNA",
+        "PORADNIA GINEKOLOGICZNA",
+        "PORADNIA UROLOGICZNA",
+        "PORADNIA CHIRURGII OGÓLNEJ",
+        "PORADNIA REUMATOLOGICZNA",
+        "PORADNIA PULMONOLOGICZNA",
+        "PORADNIA PSYCHIATRYCZNA",
+        "PORADNIA REHABILITACYJNA",
+        "REZONANS MAGNETYCZNY",
+        "TOMOGRAFIA KOMPUTEROWA",
+        "USG",
+        "ENDOSKOPIA",
+        "KOLONOSKOPIA"
+    ]
     
     /// Fetch localities dictionary
     func fetchLocalities(province: String? = nil, name: String? = nil, page: Int = 1, limit: Int = 25) async throws -> NFZAPIResponse<[String]> {

@@ -44,8 +44,6 @@ class NFZService: ObservableObject {
     
     // MARK: - Private Properties
     private let locationManager: LocationManager
-    private var cachedBenefits: [String] = []
-    private var benefitsLastFetched: Date?
     
     // MARK: - Initialization
     init(locationManager: LocationManager) {
@@ -67,36 +65,38 @@ class NFZService: ObservableObject {
         currentAPIPage = 1
         currentDisplayPage = 0
         
-        // Load benefits (service names) from API
-        await loadBenefits()
+        // Load common benefits as default list
+        // The NFZ API requires search term for /benefits, so we use predefined common ones
+        serviceNames = NFZAPIClient.commonBenefits
+        print("NFZService: Loaded \(serviceNames.count) common benefits")
+        
         isServiceNamesReady = true
         isLoadingServiceNames = false
     }
     
-    // MARK: - Load Benefits (Service Names)
-    private func loadBenefits() async {
-        // Use cached benefits if available and recent (less than 1 hour old)
-        if !cachedBenefits.isEmpty,
-           let lastFetched = benefitsLastFetched,
-           Date().timeIntervalSince(lastFetched) < 3600 {
-            serviceNames = cachedBenefits
-            print("NFZService: Using cached benefits (\(cachedBenefits.count) items)")
+    // MARK: - Search Benefits (Service Names)
+    /// Search for service names matching the query (requires at least 3 characters)
+    func searchServiceNames(query: String) async {
+        guard query.count >= 3 else {
+            // Show common benefits if query is too short
+            serviceNames = NFZAPIClient.commonBenefits
             return
         }
         
         do {
-            print("NFZService: Fetching benefits from API...")
-            let benefits = try await NFZAPIClient.shared.fetchAllBenefits()
-            cachedBenefits = benefits
-            benefitsLastFetched = Date()
-            serviceNames = benefits
-            print("NFZService: Loaded \(benefits.count) benefits from API")
-        } catch {
-            print("NFZService: Error fetching benefits: \(error)")
-            // If we have cached benefits, use them despite being old
-            if !cachedBenefits.isEmpty {
-                serviceNames = cachedBenefits
+            print("NFZService: Searching benefits for '\(query)'...")
+            let response = try await NFZAPIClient.shared.searchBenefits(name: query)
+            
+            if response.data.isEmpty {
+                // Keep showing common benefits if no results
+                print("NFZService: No benefits found for '\(query)', showing common benefits")
+            } else {
+                serviceNames = response.data
+                print("NFZService: Found \(response.data.count) benefits matching '\(query)'")
             }
+        } catch {
+            print("NFZService: Error searching benefits: \(error)")
+            // Keep current list on error
         }
     }
     

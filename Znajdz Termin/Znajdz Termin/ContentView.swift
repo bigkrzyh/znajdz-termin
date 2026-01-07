@@ -64,7 +64,7 @@ struct ContentView: View {
         .sheet(isPresented: $showServiceNamePicker) {
             ServiceNamePickerView(
                 selectedServiceName: $service.selectedServiceName,
-                serviceNames: service.serviceNames
+                service: service
             )
         }
         .onAppear {
