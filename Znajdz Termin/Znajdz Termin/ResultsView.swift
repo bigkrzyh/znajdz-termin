@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ResultsView: View {
     @ObservedObject var service: NFZService
+    @State private var showSortOptions = false
     
     var body: some View {
         VStack(spacing: 0) {
             headerView
-            dataInfoBar
+            sortingBar
             resultsList
             if service.hasMoreResults || service.isLoadingMore {
                 loadingMoreIndicator
@@ -37,62 +38,78 @@ struct ResultsView: View {
             
             Spacer()
             
-            Text(L10n.results)
-                .font(.headline)
-            
-            Spacer()
-            
-            // Balance the layout
-            Text(L10n.back)
-                .opacity(0)
-        }
-        .padding()
-        .background(Color(UIColor.systemBackground))
-    }
-    
-    private var dataInfoBar: some View {
-        VStack(spacing: 6) {
-            // Voivodeship and count
-            HStack {
-                if let voivodeship = service.selectedVoivodeship {
-                    Label(voivodeship.displayName, systemImage: "mappin.circle.fill")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
-                }
-                
-                Spacer()
-                
+            VStack(spacing: 2) {
+                Text(L10n.results)
+                    .font(.headline)
                 Text(L10n.resultsCount(service.displayedAppointments.count, service.totalResultsCount > 0 ? service.totalResultsCount : service.appointments.count))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
             
-            // Service name
+            Spacer()
+            
+            // Sort button
+            Button(action: { showSortOptions = true }) {
+                Image(systemName: "arrow.up.arrow.down")
+                    .font(.body.weight(.medium))
+                    .foregroundColor(.blue)
+            }
+        }
+        .padding()
+        .background(Color(UIColor.systemBackground))
+        .actionSheet(isPresented: $showSortOptions) {
+            ActionSheet(
+                title: Text("Sortuj według"),
+                buttons: SortOption.allCases.map { option in
+                    .default(Text(sortOptionLabel(option))) {
+                        service.changeSortOption(option)
+                    }
+                } + [.cancel(Text(L10n.cancel))]
+            )
+        }
+    }
+    
+    private func sortOptionLabel(_ option: SortOption) -> String {
+        let checkmark = service.sortOption == option ? " ✓" : ""
+        return option.rawValue + checkmark
+    }
+    
+    private var sortingBar: some View {
+        VStack(spacing: 6) {
+            // Voivodeship and service info
+            HStack {
+                if let voivodeship = service.selectedVoivodeship {
+                    Label(voivodeship.displayName, systemImage: "mappin.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.blue)
+                }
+                
+                Spacer()
+                
+                // Current sort indicator
+                HStack(spacing: 4) {
+                    Image(systemName: service.sortOption.icon)
+                        .font(.caption)
+                    Text(service.sortOption.rawValue)
+                        .font(.caption)
+                }
+                .foregroundColor(.secondary)
+            }
+            
+            // Service name if selected
             if let serviceName = service.selectedServiceName {
                 HStack {
                     Text(serviceName)
-                        .font(.subheadline)
+                        .font(.caption)
                         .fontWeight(.medium)
-                        .lineLimit(1)
-                    Spacer()
-                }
-            }
-            
-            // Data date from Excel
-            if let dataDate = service.dataDateString {
-                HStack {
-                    Image(systemName: "calendar.badge.clock")
-                        .foregroundColor(.orange)
-                        .font(.caption)
-                    Text(L10n.dataCurrentAsOf(dataDate))
-                        .font(.caption)
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
                     Spacer()
                 }
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 10)
+        .padding(.vertical, 8)
         .background(Color(UIColor.secondarySystemBackground))
     }
     

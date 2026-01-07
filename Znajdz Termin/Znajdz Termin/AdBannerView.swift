@@ -198,10 +198,33 @@ extension AdaptiveBannerViewController: BannerViewDelegate {
     }
     
     func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: Error) {
-        print("AdBanner: ❌ Failed to receive ad: \(error.localizedDescription)")
+        let errorMessage = error.localizedDescription
         
-        // Allow retry on next opportunity
+        // Check if running in simulator
+        #if targetEnvironment(simulator)
+        print("AdBanner: ⚠️ Running in Simulator - ad loading may fail")
+        print("AdBanner: ❌ Failed to receive ad: \(errorMessage)")
+        print("AdBanner: 💡 Tip: Test ads work better on real devices")
+        #else
+        print("AdBanner: ❌ Failed to receive ad: \(errorMessage)")
+        #endif
+        
+        // Common errors and their meanings:
+        // - "Could not connect to the server" - Network issue or simulator limitation
+        // - "No ad to show" - No fill, normal in testing
+        // - "Request Error" - Configuration issue
+        
+        if errorMessage.contains("connect") || errorMessage.contains("server") {
+            print("AdBanner: 💡 Network connectivity issue - this is common in the simulator")
+        }
+        
+        // Allow retry after a delay
         hasRequestedAd = false
+        
+        // Retry after 30 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30) { [weak self] in
+            self?.loadBannerAdIfAuthorized()
+        }
     }
     
     func bannerViewDidRecordImpression(_ bannerView: BannerView) {

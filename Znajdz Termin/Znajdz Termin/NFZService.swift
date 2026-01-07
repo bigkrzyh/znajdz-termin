@@ -11,6 +11,25 @@ import Foundation
 import Combine
 import CoreLocation
 
+/// Sorting options for search results
+enum SortOption: String, CaseIterable, Identifiable {
+    case distance = "Odległość"
+    case firstAvailableDate = "Termin"
+    case waitingTime = "Czas oczekiwania"
+    case queueSize = "Liczba oczekujących"
+    
+    var id: String { rawValue }
+    
+    var icon: String {
+        switch self {
+        case .distance: return "location.fill"
+        case .firstAvailableDate: return "calendar"
+        case .waitingTime: return "clock.fill"
+        case .queueSize: return "person.3.fill"
+        }
+    }
+}
+
 @MainActor
 class NFZService: ObservableObject {
     // MARK: - Published Properties
@@ -32,6 +51,7 @@ class NFZService: ObservableObject {
     @Published var isLoadingMore = false
     @Published var hasMoreResults = false
     @Published var showUrgentOnly = false  // "Pilne" filter - default unchecked (stable cases)
+    @Published var sortOption: SortOption = .distance  // Default sort by distance
     
     // MARK: - API Pagination
     @Published var totalResultsCount: Int = 0
@@ -177,21 +197,8 @@ class NFZService: ObservableObject {
             // Calculate distances using coordinates
             await calculateDistancesFromCoordinates(for: newAppointments)
             
-            // Sort by distance if available
-            let sortedAppointments = newAppointments.sorted { a, b in
-                if let distA = a.distance, let distB = b.distance {
-                    return distA < distB
-                }
-                if a.distance != nil { return true }
-                if b.distance != nil { return false }
-                // Sort by first available date if no distance
-                if let dateA = a.firstAvailableDate, let dateB = b.firstAvailableDate {
-                    return dateA < dateB
-                }
-                return a.facilityName < b.facilityName
-            }
-            
-            appointments = sortedAppointments
+            // Sort appointments based on selected option
+            appointments = sortAppointments(newAppointments)
             
             // Show first display page
             loadDisplayPage(0)
@@ -327,6 +334,67 @@ class NFZService: ObservableObject {
                 }
             }
         }
+    }
+    
+    // MARK: - Sorting
+    
+    /// Sort appointments based on the current sort option
+    private func sortAppointments(_ list: [Appointment]) -> [Appointment] {
+        switch sortOption {
+        case .distance:
+            return list.sorted { a, b in
+                if let distA = a.distance, let distB = b.distance {
+                    return distA < distB
+                }
+                if a.distance != nil { return true }
+                if b.distance != nil { return false }
+                return a.facilityName < b.facilityName
+            }
+            
+        case .firstAvailableDate:
+            return list.sorted { a, b in
+                // Parse dates for comparison
+                if let dateA = a.firstAvailableDate, let dateB = b.firstAvailableDate {
+                    return dateA < dateB
+                }
+                if a.firstAvailableDate != nil { return true }
+                if b.firstAvailableDate != nil { return false }
+                return a.facilityName < b.facilityName
+            }
+            
+        case .waitingTime:
+            return list.sorted { a, b in
+                if let waitA = a.averageWaitingDays, let waitB = b.averageWaitingDays {
+                    return waitA < waitB
+                }
+                if a.averageWaitingDays != nil { return true }
+                if b.averageWaitingDays != nil { return false }
+                return a.facilityName < b.facilityName
+            }
+            
+        case .queueSize:
+            return list.sorted { a, b in
+                if let queueA = a.numberOfWaiting, let queueB = b.numberOfWaiting {
+                    return queueA < queueB  // Smaller queue first
+                }
+                if a.numberOfWaiting != nil { return true }
+                if b.numberOfWaiting != nil { return false }
+                return a.facilityName < b.facilityName
+            }
+        }
+    }
+    
+    /// Change the sort option and re-sort displayed results
+    func changeSortOption(_ option: SortOption) {
+        guard sortOption != option else { return }
+        sortOption = option
+        
+        // Re-sort current appointments
+        appointments = sortAppointments(appointments)
+        
+        // Reset display pagination and reload
+        currentDisplayPage = 0
+        loadDisplayPage(0)
     }
     
     // MARK: - Refresh

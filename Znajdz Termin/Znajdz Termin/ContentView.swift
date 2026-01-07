@@ -262,7 +262,7 @@ struct SearchView: View {
     }
     
     private var bottomInfoBar: some View {
-        VStack(spacing: 8) {
+        Group {
             if let error = service.errorMessage {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
@@ -272,32 +272,10 @@ struct SearchView: View {
                         .foregroundColor(.red)
                     Spacer()
                 }
-            }
-            
-            HStack {
-                Text(formatDate(Date()))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Spacer()
-                
-                if let lastUpdate = service.lastUpdateDate {
-                    Text(L10n.dataLabel(formatDate(lastUpdate)))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                .padding()
+                .background(Color(UIColor.secondarySystemBackground))
             }
         }
-        .padding()
-        .background(Color(UIColor.secondarySystemBackground))
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "pl_PL")
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: date)
     }
 }
 
