@@ -16,6 +16,7 @@ znajdz-termin/
 ├── index.html          # English (default)
 ├── privacy.html        # Privacy Policy (English)
 ├── terms.html          # Terms of Service (English)
+├── app-ads.txt         # AdMob app-ads.txt (IAB Tech Lab spec)
 ├── style.css           # Shared styles
 ├── pl/
 │   ├── index.html      # Polish
@@ -60,6 +61,7 @@ After setting up GitHub Pages, use these URLs in App Store Connect:
 - **Support URL**: `https://bigkrzyh.github.io/znajdz-termin/`
 - **Privacy Policy URL**: `https://bigkrzyh.github.io/znajdz-termin/privacy.html`
 - **Terms of Service URL**: `https://bigkrzyh.github.io/znajdz-termin/terms.html`
+- **app-ads.txt URL**: `https://bigkrzyh.github.io/znajdz-termin/app-ads.txt`
 
 ## App Store Privacy Labels
 
@@ -70,6 +72,33 @@ When submitting to App Store, use this information for Privacy Labels:
 | Coarse Location | Yes | App Functionality | No | No |
 | Device ID | Yes (via AdMob) | Advertising | No | Yes |
 | Usage Data | Yes (via AdMob) | Advertising | No | Yes |
+
+## App-ads.txt (Google AdMob)
+
+The `app-ads.txt` file is required by Google AdMob for authorized sellers verification. This file follows the IAB Tech Lab specification.
+
+### Contents
+```
+google.com, pub-2092028258025749, DIRECT, f08c47fec0942fa0
+```
+
+### Setup Instructions (Polish/Polski)
+
+1. **Upewnij się, że plik app-ads.txt został utworzony na podstawie specyfikacji podanej przez IAB Tech Lab.**
+   - Plik jest już utworzony w tym repozytorium.
+
+2. **Opublikuj plik app-ads.txt w domenie głównej swojej witryny, do której masz uprawnienia dewelopera.**
+   - Po wdrożeniu GitHub Pages plik będzie dostępny pod adresem:
+   - `https://bigkrzyh.github.io/znajdz-termin/app-ads.txt`
+
+3. **Zindeksuj plik app-ads.txt, aby umożliwić weryfikację aplikacji.**
+   - Google automatycznie zindeksuje plik.
+   - Przeprowadzi kilka testów, aby upewnić się, że plik app-ads.txt można znaleźć i że jest prawidłowo sformatowany.
+   - Zwykle zajmuje to chwilę, ale w niektórych przypadkach może potrwać dłużej.
+
+### Verification URL
+After GitHub Pages deployment:
+- **app-ads.txt URL**: `https://bigkrzyh.github.io/znajdz-termin/app-ads.txt`
 
 ## App Tracking Transparency (ATT)
 
