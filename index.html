@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Znajdź Termin - Support</title>
+    <title>Znajdź Termin - Pomoc</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="alternate" hreflang="pl" href="pl/">
+    <link rel="alternate" hreflang="pl" href="./">
+    <link rel="alternate" hreflang="en" href="en/">
     <link rel="alternate" hreflang="uk" href="uk/">
     <link rel="alternate" hreflang="ru" href="ru/">
-    <link rel="alternate" hreflang="en" href="./">
+    <link rel="alternate" hreflang="x-default" href="./">
 </head>
 <body>
     <header>
@@ -18,7 +19,7 @@
                 <h1>Znajdź Termin</h1>
             </div>
             <nav class="lang-nav">
-                <a href="pl/" class="lang-switch">PL</a>
+                <a href="en/" class="lang-switch">EN</a>
                 <a href="uk/" class="lang-switch">UA</a>
                 <a href="ru/" class="lang-switch">RU</a>
             </nav>
@@ -28,34 +29,44 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h2>Find Your Doctor Appointment</h2>
-                <p>Search for available appointments in the Polish National Health Fund (NFZ) system quickly and easily.</p>
+                <h2>Znajdź Termin do Lekarza</h2>
+                <p>Wyszukaj wolne terminy wizyt w systemie Narodowego Funduszu Zdrowia szybko i łatwo.</p>
             </div>
         </section>
 
         <section class="features">
             <div class="container">
-                <h3>Features</h3>
+                <h3>Funkcje</h3>
                 <div class="feature-grid">
                     <div class="feature">
                         <span class="icon">🔍</span>
-                        <h4>Easy Search</h4>
-                        <p>Search by voivodeship, medical service, and location</p>
+                        <h4>Łatwe Wyszukiwanie</h4>
+                        <p>Szukaj według województwa, świadczenia medycznego i miejscowości</p>
                     </div>
                     <div class="feature">
                         <span class="icon">📍</span>
-                        <h4>Location-Based</h4>
-                        <p>Find facilities near you with distance calculation</p>
+                        <h4>Lokalizacja</h4>
+                        <p>Znajdź placówki w pobliżu z obliczeniem odległości</p>
                     </div>
                     <div class="feature">
                         <span class="icon">📞</span>
-                        <h4>Quick Contact</h4>
-                        <p>Call facilities directly from the app</p>
+                        <h4>Szybki Kontakt</h4>
+                        <p>Zadzwoń do placówki bezpośrednio z aplikacji</p>
                     </div>
                     <div class="feature">
                         <span class="icon">🗺️</span>
-                        <h4>Navigation</h4>
-                        <p>Get directions to any facility with one tap</p>
+                        <h4>Nawigacja</h4>
+                        <p>Uzyskaj wskazówki dojazdu jednym kliknięciem</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">📊</span>
+                        <h4>Sortowanie</h4>
+                        <p>Sortuj wyniki według daty, odległości, czasu oczekiwania lub kolejki</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">⏱️</span>
+                        <h4>Dane w Czasie Rzeczywistym</h4>
+                        <p>Dane pobierane bezpośrednio z API NFZ - zawsze aktualne</p>
                     </div>
                 </div>
             </div>
@@ -63,36 +74,51 @@
 
         <section class="support">
             <div class="container">
-                <h3>Support</h3>
-                <p>Need help with the app? We're here to assist you.</p>
+                <h3>Pomoc</h3>
+                <p>Potrzebujesz pomocy z aplikacją? Jesteśmy tutaj, aby Ci pomóc.</p>
                 
                 <div class="faq">
-                    <h4>Frequently Asked Questions</h4>
+                    <h4>Często Zadawane Pytania</h4>
                     
                     <details>
-                        <summary>Where does the data come from?</summary>
-                        <p>All appointment data is sourced directly from the official Polish National Health Fund (NFZ) website at terminyleczenia.nfz.gov.pl. The data is updated regularly by NFZ.</p>
+                        <summary>Skąd pochodzą dane?</summary>
+                        <p>Wszystkie dane o terminach pochodzą bezpośrednio z oficjalnego API Narodowego Funduszu Zdrowia (NFZ) dostępnego pod adresem api.nfz.gov.pl/app-itl-api/. Dane są pobierane w czasie rzeczywistym, więc zawsze masz dostęp do najnowszych informacji o dostępnych terminach.</p>
                     </details>
                     
                     <details>
-                        <summary>How current is the data?</summary>
-                        <p>The app downloads the latest data from NFZ servers. You can see the data date in the results screen. Pull down to refresh and get the newest data.</p>
+                        <summary>Jak aktualne są dane?</summary>
+                        <p>Aplikacja pobiera dane w czasie rzeczywistym z API NFZ przy każdym wyszukiwaniu. Nie ma potrzeby ręcznego odświeżania - dane są zawsze aktualne. Możesz pociągnąć w dół, aby ponownie pobrać najnowsze dane.</p>
                     </details>
                     
                     <details>
-                        <summary>Why can't I find a specific facility?</summary>
-                        <p>Only facilities registered with NFZ and accepting public health insurance patients are listed. Private-only facilities are not included in the NFZ database.</p>
+                        <summary>Dlaczego nie mogę znaleźć konkretnej placówki?</summary>
+                        <p>Wyświetlane są tylko placówki zarejestrowane w NFZ i przyjmujące pacjentów na ubezpieczenie zdrowotne. Placówki wyłącznie prywatne nie są uwzględnione w bazie NFZ.</p>
                     </details>
                     
                     <details>
-                        <summary>How do I book an appointment?</summary>
-                        <p>The app shows available appointments and contact information. To book, call the facility directly using the phone button in the app.</p>
+                        <summary>Jak umówić się na wizytę?</summary>
+                        <p>Aplikacja pokazuje dostępne terminy i dane kontaktowe. Aby umówić wizytę, zadzwoń bezpośrednio do placówki używając przycisku telefonu w aplikacji.</p>
+                    </details>
+                    
+                    <details>
+                        <summary>Jakie opcje sortowania są dostępne?</summary>
+                        <p>Możesz sortować wyniki według: pierwszej dostępnej daty, odległości od Twojej lokalizacji, czasu oczekiwania lub liczby osób w kolejce. Wybierz opcję sortowania z menu w ekranie wyników.</p>
+                    </details>
+                    
+                    <details>
+                        <summary>Czy aplikacja zapisuje historię wyszukiwań?</summary>
+                        <p>Tak, aplikacja zapisuje historię wcześniej wyszukiwanych nazw świadczeń. Możesz szybko wybrać z historii lub usunąć poszczególne wpisy.</p>
+                    </details>
+                    
+                    <details>
+                        <summary>Czy aplikacja jest bezpłatna?</summary>
+                        <p>Tak, aplikacja jest całkowicie bezpłatna. Nie ma żadnych ukrytych opłat ani subskrypcji.</p>
                     </details>
                 </div>
                 
                 <div class="contact">
-                    <h4>Contact Us</h4>
-                    <p>For support inquiries, please email:</p>
+                    <h4>Kontakt</h4>
+                    <p>W przypadku pytań dotyczących wsparcia, napisz do nas:</p>
                     <a href="mailto:bigkrzyh@gmail.com" class="email-link">bigkrzyh@gmail.com</a>
                 </div>
             </div>
@@ -100,18 +126,17 @@
 
         <section class="legal">
             <div class="container">
-                <h3>Legal</h3>
-                <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
-                <p class="disclaimer">This app is not affiliated with NFZ. Data is provided by the Polish National Health Fund public service.</p>
+                <h3>Informacje Prawne</h3>
+                <p><a href="privacy.html">Polityka Prywatności</a> | <a href="terms.html">Regulamin</a></p>
+                <p class="disclaimer">Ta aplikacja nie jest powiązana z NFZ. Dane są udostępniane przez serwis publiczny Narodowego Funduszu Zdrowia.</p>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Znajdź Termin. All rights reserved.</p>
+            <p>&copy; 2025 Znajdź Termin. Wszelkie prawa zastrzeżone.</p>
         </div>
     </footer>
 </body>
 </html>
-

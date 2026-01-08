@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Znajdź Termin - Pomoc</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="alternate" hreflang="en" href="../">
+    <link rel="alternate" hreflang="pl" href="../">
+    <link rel="alternate" hreflang="en" href="../en/">
     <link rel="alternate" hreflang="uk" href="../uk/">
     <link rel="alternate" hreflang="ru" href="../ru/">
-    <link rel="alternate" hreflang="pl" href="./">
+    <link rel="alternate" hreflang="x-default" href="../">
 </head>
 <body>
     <header>
@@ -18,7 +19,7 @@
                 <h1>Znajdź Termin</h1>
             </div>
             <nav class="lang-nav">
-                <a href="../" class="lang-switch">EN</a>
+                <a href="../en/" class="lang-switch">EN</a>
                 <a href="../uk/" class="lang-switch">UA</a>
                 <a href="../ru/" class="lang-switch">RU</a>
             </nav>
@@ -57,6 +58,16 @@
                         <h4>Nawigacja</h4>
                         <p>Uzyskaj wskazówki dojazdu jednym kliknięciem</p>
                     </div>
+                    <div class="feature">
+                        <span class="icon">📊</span>
+                        <h4>Sortowanie</h4>
+                        <p>Sortuj wyniki według daty, odległości, czasu oczekiwania lub kolejki</p>
+                    </div>
+                    <div class="feature">
+                        <span class="icon">⏱️</span>
+                        <h4>Dane w Czasie Rzeczywistym</h4>
+                        <p>Dane pobierane bezpośrednio z API NFZ - zawsze aktualne</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -71,12 +82,12 @@
                     
                     <details>
                         <summary>Skąd pochodzą dane?</summary>
-                        <p>Wszystkie dane o terminach pochodzą bezpośrednio z oficjalnej strony Narodowego Funduszu Zdrowia terminyleczenia.nfz.gov.pl. Dane są regularnie aktualizowane przez NFZ.</p>
+                        <p>Wszystkie dane o terminach pochodzą bezpośrednio z oficjalnego API Narodowego Funduszu Zdrowia (NFZ) dostępnego pod adresem api.nfz.gov.pl/app-itl-api/. Dane są pobierane w czasie rzeczywistym, więc zawsze masz dostęp do najnowszych informacji o dostępnych terminach.</p>
                     </details>
                     
                     <details>
                         <summary>Jak aktualne są dane?</summary>
-                        <p>Aplikacja pobiera najnowsze dane z serwerów NFZ. Data aktualizacji danych jest widoczna na ekranie wyników. Pociągnij w dół, aby odświeżyć i pobrać najnowsze dane.</p>
+                        <p>Aplikacja pobiera dane w czasie rzeczywistym z API NFZ przy każdym wyszukiwaniu. Nie ma potrzeby ręcznego odświeżania - dane są zawsze aktualne. Możesz pociągnąć w dół, aby ponownie pobrać najnowsze dane.</p>
                     </details>
                     
                     <details>
@@ -87,6 +98,16 @@
                     <details>
                         <summary>Jak umówić się na wizytę?</summary>
                         <p>Aplikacja pokazuje dostępne terminy i dane kontaktowe. Aby umówić wizytę, zadzwoń bezpośrednio do placówki używając przycisku telefonu w aplikacji.</p>
+                    </details>
+                    
+                    <details>
+                        <summary>Jakie opcje sortowania są dostępne?</summary>
+                        <p>Możesz sortować wyniki według: pierwszej dostępnej daty, odległości od Twojej lokalizacji, czasu oczekiwania lub liczby osób w kolejce. Wybierz opcję sortowania z menu w ekranie wyników.</p>
+                    </details>
+                    
+                    <details>
+                        <summary>Czy aplikacja zapisuje historię wyszukiwań?</summary>
+                        <p>Tak, aplikacja zapisuje historię wcześniej wyszukiwanych nazw świadczeń. Możesz szybko wybrać z historii lub usunąć poszczególne wpisy.</p>
                     </details>
                     
                     <details>
